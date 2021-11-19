@@ -9,8 +9,8 @@ from torchvision import transforms
 from PIL import Image
 from tqdm import tqdm
 
-import lpips
-from model.stylegan2 import Generator
+import src.lpips
+from src.model.stylegan2 import Generator
 
 
 def noise_regularize(noises):

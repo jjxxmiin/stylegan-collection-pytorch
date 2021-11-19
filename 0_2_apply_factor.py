@@ -3,7 +3,7 @@ import argparse
 import torch
 from torchvision import utils
 
-from model.stylegan2 import Generator
+from src.model.stylegan2 import Generator
 
 
 def main(args):
