@@ -42,7 +42,7 @@ python prepare_data.py --path ../../datasets/animal --out ./data
 ```
 
 ```
-python -m torch.distributed.launch --nproc_per_node=4 --master_port=1234 train.py --path ./data
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=1234 train.py --path ./data --ckpt ./checkpoint/stylegan2-ffhq.pt 
 ```
 
 ---

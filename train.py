@@ -1,17 +1,12 @@
 import argparse
-import math
-import random
 import os
 
 import numpy as np
 import torch
-from torch import nn, autograd, optim
+from torch import nn, optim
 from torch.cuda import synchronize
-from torch.nn import functional as F
 from torch.utils import data
-import torch.distributed as dist
-from torchvision import transforms, utils
-from tqdm import tqdm
+from torchvision import transforms
 
 from src.distributed import synchronize
 from src.model.stylegan2 import Generator, Discriminator
@@ -71,7 +66,7 @@ def main(args):
             pass
 
         generator.load_state_dict(ckpt["g"], strict=False)
-        discriminator.load_state_dict(ckpt["d"])
+        discriminator.load_state_dict(ckpt["d"], strict=False)
         g_ema.load_state_dict(ckpt["g_ema"], strict=False)
 
         g_optim.load_state_dict(ckpt["g_optim"])
