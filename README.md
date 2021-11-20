@@ -1,11 +1,8 @@
-# stylegan
+# stylegan for study ~
 
-- StyleGAN
-- StyleGAN2
-- StyleGAN2 + ada
-- FreezeG
-- FreezeD
-- StyleGAN3
+- 0 : stylegan2 test
+- 1 : stylegan2 finetune
+- 2 : styleclip
 
 StyleGAN MODEL : https://drive.google.com/uc?id=1EM87UquaoQmk17Q8d5kYIAHqu0dkYqdT
 
@@ -16,19 +13,19 @@ StyleGAN MODEL : https://drive.google.com/uc?id=1EM87UquaoQmk17Q8d5kYIAHqu0dkYqd
 ## Generate
 
 ```
-python generate.py --sample N_FACES --pics N_PICS --ckpt ./checkpoint/stylegan2-ffhq-config-f.pt
+python 0_0_generate.py --sample N_FACES --pics N_PICS --ckpt ./checkpoint/stylegan2-ffhq-config-f.pt
 ```
 
 ## Closed-Form Factorization
 
 ```
-python closed_form_factorization.py ./checkpoint/stylegan2-ffhq-config-f.pt
+python 0_1_closed_form_factorization.py ./checkpoint/stylegan2-ffhq-config-f.pt
 ```
 
 ## Apply Factor
 
 ```
-python apply_factor.py -i 19 -d 5 -n 10 --ckpt ./checkpoint/stylegan2-ffhq-config-f.pt factor.pt
+python 0_2_apply_factor.py -i 19 -d 5 -n 10 --ckpt ./checkpoint/stylegan2-ffhq-config-f.pt factor.pt
 ```
 
 Will generate 10 random samples, and samples generated from latents that moved along 19th eigenvector with size/degree +-5.
@@ -37,18 +34,38 @@ Will generate 10 random samples, and samples generated from latents that moved a
 
 # 1
 
-```
-python prepare_data.py --path ../../datasets/animal --out ./data 
-```
+## prepare data
 
 ```
-python -m torch.distributed.launch --nproc_per_node=4 --master_port=1234 train.py --path ./data --ckpt ./checkpoint/stylegan2-ffhq.pt 
+python 1_0_prepare_data.py --path ../../datasets/animal --out ./data 
+```
+
+## freeze G
+
+```
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=1234 1_1_train_freeze_G.py --path ./data --ckpt ./checkpoint/stylegan2-ffhq.pt 
+```
+
+## freeze D
+
+```
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=1234 1_2_train_freeze_D.py --freezeD --path ./data --ckpt ./checkpoint/stylegan2-ffhq.pt 
 ```
 
 ---
 
+# 2
+
+## CLIP
+
+```
+pip install ftfy regex tqdm gdown
+pip install git+https://github.com/openai/CLIP.git
+```
+
 # Reference
 
-- [https://github.com/rosinality](https://github.com/rosinality)
-- [https://github.com/bryandlee/FreezeG](https://github.com/bryandlee/FreezeG)
-- [https://github.com/sangwoomo/FreezeD](https://github.com/sangwoomo/FreezeD)
+- [https://github.com/rosinality](https://github.com/rosinality) - main
+- [https://github.com/bryandlee/FreezeG](https://github.com/bryandlee/FreezeG) - freezeG
+- [https://github.com/sangwoomo/FreezeD](https://github.com/sangwoomo/FreezeD) - freezeD
+- [https://github.com/openai/CLIP](https://github.com/openai/CLIP) - clip
