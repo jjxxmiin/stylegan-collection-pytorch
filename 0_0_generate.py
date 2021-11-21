@@ -2,7 +2,7 @@ import argparse
 
 import torch
 from torchvision import utils
-from src.model.stylegan2 import Generator
+from src.models.stylegan import Generator
 from tqdm import tqdm
 
 

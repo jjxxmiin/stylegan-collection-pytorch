@@ -10,7 +10,7 @@ from PIL import Image
 from tqdm import tqdm
 
 import src.lpips
-from src.model.stylegan2 import Generator
+from src.models.stylegan import Generator
 
 
 def noise_regularize(noises):

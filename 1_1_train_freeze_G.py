@@ -9,7 +9,7 @@ from torch.utils import data
 from torchvision import transforms
 
 from src.distributed import synchronize
-from src.model.stylegan2 import Generator, Discriminator
+from src.models.stylegan import Generator, Discriminator
 from src.helper import accumulate, data_sampler
 from src.trainer import train_freeze_G
 from dataset import MultiResolutionDataset

@@ -1,7 +1,6 @@
 import argparse
 import os
 
-import numpy as np
 import torch
 from torch import nn, optim
 from torch.cuda import synchronize
@@ -9,7 +8,7 @@ from torch.utils import data
 from torchvision import transforms
 
 from src.distributed import synchronize
-from src.model.stylegan2 import Generator, Discriminator
+from src.models.stylegan import Generator, Discriminator
 from src.helper import accumulate, data_sampler
 from src.trainer import train_freeze_D
 from dataset import MultiResolutionDataset

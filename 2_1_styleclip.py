@@ -7,12 +7,11 @@ import torchvision
 from torch import optim
 from tqdm import tqdm
 
-from criteria.clip_loss import CLIPLoss
-from criteria.id_loss import IDLoss
-from mapper.training.train_utils import STYLESPACE_DIMENSIONS
-from src.model.stylegan2 import Generator
+from src.criteria.clip_loss import CLIPLoss
+from src.criteria.id_loss import IDLoss
+from src.mapper.training.train_utils import STYLESPACE_DIMENSIONS
+from src.models.stylegan import Generator
 import clip
-from utils import ensure_checkpoint_exists
 
 STYLESPACE_INDICES_WITHOUT_TORGB = [i for i in range(len(STYLESPACE_DIMENSIONS)) if i not in list(range(1, len(STYLESPACE_DIMENSIONS), 3))]
 
@@ -25,7 +24,6 @@ def get_lr(t, initial_lr, rampdown=0.25, rampup=0.05):
 
 
 def main(args):
-    ensure_checkpoint_exists(args.ckpt)
     text_inputs = torch.cat([clip.tokenize(args.description)]).cuda()
     os.makedirs(args.results_dir, exist_ok=True)
 
@@ -115,11 +113,10 @@ def main(args):
     return final_result
 
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--description", type=str, default="a person with purple hair", help="the text that guides the editing/generation")
-    parser.add_argument("--ckpt", type=str, default="../pretrained_models/stylegan2-ffhq-config-f.pt", help="pretrained StyleGAN2 weights")
+    parser.add_argument("--description", type=str, default="a person with bald", help="the text that guides the editing/generation")
+    parser.add_argument("--ckpt", type=str, default="./checkpoint/stylegan2-ffhq-config-f.pt", help="pretrained StyleGAN2 weights")
     parser.add_argument("--stylegan_size", type=int, default=1024, help="StyleGAN resolution")
     parser.add_argument("--lr_rampup", type=float, default=0.05)
     parser.add_argument("--lr", type=float, default=0.1)
@@ -135,7 +132,7 @@ if __name__ == "__main__":
     parser.add_argument('--work_in_stylespace', default=False, action='store_true')
     parser.add_argument("--save_intermediate_image_every", type=int, default=20, help="if > 0 then saves intermidate results during the optimization")
     parser.add_argument("--results_dir", type=str, default="results")
-    parser.add_argument('--ir_se50_weights', default='../pretrained_models/model_ir_se50.pth', type=str,
+    parser.add_argument('--ir_se50_weights', default='./checkpoint/model_ir_se50.pth', type=str,
                              help="Path to facial recognition network used in ID loss")
 
     args = parser.parse_args()
