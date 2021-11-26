@@ -8,8 +8,6 @@ StyleGAN MODEL : https://drive.google.com/uc?id=1EM87UquaoQmk17Q8d5kYIAHqu0dkYqd
 
 ---
 
-# 0
-
 ## Generate
 
 ```
@@ -37,14 +35,14 @@ python 0_3_projector.py ./results/generate.png
 ```
 ---
 
-# 1
-
 ## prepare data
 
 ```
 python 1_0_prepare_data.py --path [YOUR DATASET] --out ./data 
 python 1_0_prepare_data.py --path ../../datasets/animal --out ./data 
 ```
+
+---
 
 ## freeze G
 
@@ -60,14 +58,34 @@ python -m torch.distributed.launch --nproc_per_node=4 --master_port=1234 1_2_tra
 
 ---
 
-# 2
-
 ## CLIP
 
 ```
 pip install ftfy regex tqdm gdown
 pip install git+https://github.com/openai/CLIP.git
 ```
+
+```
+python 3_stylespace.py
+```
+
+---
+
+## Pixel2Style2Pixel
+
+```
+python 4_psp.py
+```
+
+---
+
+## Encoding4Editing
+
+```
+python 5_e4e.py
+```
+
+---
 
 # Reference
 
