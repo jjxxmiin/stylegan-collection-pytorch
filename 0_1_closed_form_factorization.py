@@ -29,9 +29,15 @@ if __name__ == "__main__":
     parser.add_argument(
         "--out", 
         type=str, 
-        default='./checkpoint/factor.pt',
+        default='../checkpoint/factor.pt',
         help="name of the result factor file"
     )
-    parser.add_argument("ckpt", type=str, help="name of the model checkpoint")
+    parser.add_argument(
+        "--ckpt", 
+        type=str, 
+        default='../checkpoint/stylegan2-ffhq-config-f.pt',
+        help="name of the model checkpoint")
 
     args = parser.parse_args()
+    
+    main(args)

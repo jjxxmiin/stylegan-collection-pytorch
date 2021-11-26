@@ -38,17 +38,23 @@ def main(args):
     elif args.mode == "edit":
         latent_code_init_not_trunc = torch.randn(1, 512).cuda()
         with torch.no_grad():
-            _, latent_code_init, _ = g_ema([latent_code_init_not_trunc], return_latents=True,
-                                        truncation=args.truncation, truncation_latent=mean_latent)
+            _, latent_code_init = g_ema([latent_code_init_not_trunc], 
+                                        return_latents=True,
+                                        truncation=args.truncation, 
+                                        truncation_latent=mean_latent)
     else:
         latent_code_init = mean_latent.detach().clone().repeat(1, 18, 1)
 
     with torch.no_grad():
-        img_orig, _ = g_ema([latent_code_init], input_is_latent=True, randomize_noise=False)
+        img_orig, _ = g_ema([latent_code_init],
+                            input_is_latent=True, 
+                            randomize_noise=False)
 
     if args.work_in_stylespace:
         with torch.no_grad():
-            _, _, latent_code_init = g_ema([latent_code_init], input_is_latent=True, return_latents=True)
+            _, latent_code_init = g_ema([latent_code_init], 
+                                        input_is_latent=True, 
+                                        return_style_vector=True)
         latent = [s.detach().clone() for s in latent_code_init]
         for c, s in enumerate(latent):
             if c in STYLESPACE_INDICES_WITHOUT_TORGB:
@@ -72,7 +78,10 @@ def main(args):
         lr = get_lr(t, args.lr)
         optimizer.param_groups[0]["lr"] = lr
 
-        img_gen, _ = g_ema([latent], input_is_latent=True, randomize_noise=False, input_is_stylespace=args.work_in_stylespace)
+        img_gen, _ = g_ema([latent], 
+                           input_is_latent=True, 
+                           randomize_noise=False, 
+                           input_is_stylespace=args.work_in_stylespace)
 
         c_loss = clip_loss(img_gen, text_inputs)
 
@@ -115,8 +124,8 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--description", type=str, default="a person with bald", help="the text that guides the editing/generation")
-    parser.add_argument("--ckpt", type=str, default="./checkpoint/stylegan2-ffhq-config-f.pt", help="pretrained StyleGAN2 weights")
+    parser.add_argument("--description", type=str, default="a person with smile", help="the text that guides the editing/generation")
+    parser.add_argument("--ckpt", type=str, default="../checkpoint/stylegan2-ffhq-config-f.pt", help="pretrained StyleGAN2 weights")
     parser.add_argument("--stylegan_size", type=int, default=1024, help="StyleGAN resolution")
     parser.add_argument("--lr_rampup", type=float, default=0.05)
     parser.add_argument("--lr", type=float, default=0.1)
@@ -132,11 +141,11 @@ if __name__ == "__main__":
     parser.add_argument('--work_in_stylespace', default=False, action='store_true')
     parser.add_argument("--save_intermediate_image_every", type=int, default=20, help="if > 0 then saves intermidate results during the optimization")
     parser.add_argument("--results_dir", type=str, default="results")
-    parser.add_argument('--ir_se50_weights', default='./checkpoint/model_ir_se50.pth', type=str,
+    parser.add_argument('--ir_se50_weights', default='../checkpoint/model_ir_se50.pth', type=str,
                              help="Path to facial recognition network used in ID loss")
 
     args = parser.parse_args()
 
     result_image = main(args)
 
-    torchvision.utils.save_image(result_image.detach().cpu(), os.path.join(args.results_dir, "final_result.jpg"), normalize=True, scale_each=True, range=(-1, 1))
+    torchvision.utils.save_image(result_image.detach().cpu(), os.path.join(args.results_dir, "styleclip.jpg"), normalize=True, scale_each=True, range=(-1, 1))

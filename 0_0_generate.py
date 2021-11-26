@@ -10,20 +10,20 @@ def generate(args, g_ema, device, mean_latent):
 
     with torch.no_grad():
         g_ema.eval()
-        for i in tqdm(range(args.pics)):
-            sample_z = torch.randn(args.sample, args.latent, device=device)
 
-            sample, _ = g_ema(
-                [sample_z], truncation=args.truncation, truncation_latent=mean_latent
-            )
+        sample_z = torch.randn(args.sample, args.latent, device=device)
 
-            utils.save_image(
-                sample,
-                f"sample/{str(i).zfill(6)}.png",
-                nrow=1,
-                normalize=True,
-                range=(-1, 1),
-            )
+        sample, _ = g_ema(
+            [sample_z], truncation=args.truncation, truncation_latent=mean_latent
+        )
+
+        utils.save_image(
+            sample,
+            "./results/generate.png",
+            nrow=1,
+            normalize=True,
+            range=(-1, 1),
+        )
 
 
 def main(args):
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--ckpt",
         type=str,
-        default="checkpoint/stylegan2-ffhq-config-f.pt",
+        default="../checkpoint/stylegan2-ffhq-config-f.pt",
         help="path to the model checkpoint",
     )
     parser.add_argument(
@@ -84,3 +84,5 @@ if __name__ == "__main__":
 
     args.latent = 512
     args.n_mlp = 8
+    
+    main(args)

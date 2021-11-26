@@ -81,7 +81,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--ckpt", 
         type=str, 
-        default='./checkpoint/stylegan2-ffhq-config-f.pt',
+        default='../checkpoint/stylegan2-ffhq-config-f.pt',
         help="path to the model checkpoint"
     )
     parser.add_argument(
@@ -185,7 +185,7 @@ if __name__ == "__main__":
         latent_mean = latent_out.mean(0)
         latent_std = ((latent_out - latent_mean).pow(2).sum() / n_mean_latent) ** 0.5
 
-    percept = lpips.PerceptualLoss(
+    percept = src.lpips.PerceptualLoss(
         model="net-lin", net="vgg", use_gpu=device.startswith("cuda")
     )
 
@@ -252,7 +252,7 @@ if __name__ == "__main__":
 
     img_gen, _ = g_ema([latent_path[-1]], input_is_latent=True, noise=noises)
 
-    filename = os.path.splitext(os.path.basename(args.files[0]))[0] + ".pt"
+    filename = "./results/" + os.path.splitext(os.path.basename(args.files[0]))[0] + ".pt"
 
     img_ar = make_image(img_gen)
 
@@ -268,7 +268,7 @@ if __name__ == "__main__":
             "noise": noise_single,
         }
 
-        img_name = os.path.splitext(os.path.basename(input_name))[0] + "-project.png"
+        img_name = "./results/" + os.path.splitext(os.path.basename(input_name))[0] + "-project.png"
         pil_img = Image.fromarray(img_ar[i])
         pil_img.save(img_name)
 

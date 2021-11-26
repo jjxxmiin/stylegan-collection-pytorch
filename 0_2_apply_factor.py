@@ -40,7 +40,7 @@ def main(args):
 
     grid = utils.save_image(
         torch.cat([img1, img, img2], 0),
-        f"{args.out_prefix}_index-{args.index}_degree-{args.degree}.png",
+        f"./results/{args.out_prefix}_index-{args.index}_degree-{args.degree}.png",
         normalize=True,
         range=(-1, 1),
         nrow=args.n_sample,
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--ckpt", 
         type=str, 
-        default='./checkpoint/stylegan2-ffhq-config-f.pt',
+        default='../checkpoint/stylegan2-ffhq-config-f.pt',
         help="stylegan2 checkpoints"
     )
     parser.add_argument(
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--factor",
         type=str,
-        default='./checkpoint/factor.pt',
+        default='../checkpoint/factor.pt',
         help="name of the closed form factorization result factor file",
     )
 

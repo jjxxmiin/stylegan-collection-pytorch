@@ -473,6 +473,8 @@ class Generator(nn.Module):
         self,
         styles,
         return_latents=False,
+        return_features=False,
+        return_style_vector=False,
         inject_index=None,
         truncation=1,
         truncation_latent=None,
@@ -567,8 +569,14 @@ class Generator(nn.Module):
         image = skip
 
         if return_latents:
-            return image, latent, style_vector
+            return image, latent
 
+        elif return_style_vector:
+            return image, style_vector
+            
+        elif return_features:
+            return image, out
+            
         else:
             return image, None
 
