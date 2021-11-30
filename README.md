@@ -1,12 +1,15 @@
-# stylegan for study ~
+# stylegan code collection
 
-- 0 : stylegan2 test
-- 1 : stylegan2 finetune
-- 2 : styleclip
-
-StyleGAN MODEL : https://drive.google.com/uc?id=1EM87UquaoQmk17Q8d5kYIAHqu0dkYqdT
+- 0 : StyleGAN2
+- 1 : StyleGAN2 finetune (freeze G, freeze D)
+- 2 : StyleClip
+- 3 : StyleSpace
+- 4 : PSP
+- 5 : E4E
 
 ---
+
+**StyleGAN MODEL** : https://drive.google.com/uc?id=1EM87UquaoQmk17Q8d5kYIAHqu0dkYqdT
 
 ## Generate
 
@@ -58,12 +61,24 @@ python -m torch.distributed.launch --nproc_per_node=4 --master_port=1234 1_2_tra
 
 ---
 
-## CLIP
+## StyleCLIP
+
+**StyleCLIP MODEL** : [https://github.com/orpatashnik/StyleCLIP](https://github.com/orpatashnik/StyleCLIP)
 
 ```
 pip install ftfy regex tqdm gdown
 pip install git+https://github.com/openai/CLIP.git
 ```
+
+```
+python 2_1_styleclip.py
+```
+
+---
+
+## StyleSpace
+
+**StyleSpace MODEL** : [https://github.com/xrenaa/StyleSpace-pytorch](https://github.com/xrenaa/StyleSpace-pytorch)
 
 ```
 python 3_stylespace.py
@@ -73,6 +88,8 @@ python 3_stylespace.py
 
 ## Pixel2Style2Pixel
 
+**PSP MODEL** : [https://github.com/eladrich/pixel2style2pixel](https://github.com/eladrich/pixel2style2pixel)
+
 ```
 python 4_psp.py
 ```
@@ -80,6 +97,8 @@ python 4_psp.py
 ---
 
 ## Encoding4Editing
+
+**E4E MODEL** : [https://github.com/omertov/encoder4editing](https://github.com/omertov/encoder4editing)
 
 ```
 python 5_e4e.py
@@ -94,4 +113,6 @@ python 5_e4e.py
 - [https://github.com/sangwoomo/FreezeD](https://github.com/sangwoomo/FreezeD) - freezeD
 - [https://github.com/orpatashnik/StyleCLIP](https://github.com/orpatashnik/StyleCLIP) - styleclip
 - [https://github.com/xrenaa/StyleSpace-pytorch](https://github.com/xrenaa/StyleSpace-pytorch) - stylespace
+- [https://github.com/eladrich/pixel2style2pixel](https://github.com/eladrich/pixel2style2pixel) - psp
+- [https://github.com/omertov/encoder4editing](https://github.com/omertov/encoder4editing) - e4e
 
